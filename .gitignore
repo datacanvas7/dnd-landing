@@ -13,6 +13,9 @@
 # testing
 /coverage
 
+# local dev email outbox (welcome emails written when no RESEND_API_KEY)
+/.outbox/
+
 # next.js
 /.next/
 /out/
@@ -32,6 +35,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+
+# internal working notes (contains personal/test data)
+PROGRESS.md
 
 # vercel
 .vercel
