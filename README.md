@@ -338,20 +338,29 @@ is per-instance on serverless and intentionally lightweight.
 
 ---
 
-## Deployment (Vercel)
+## Deployment (Vercel) — LIVE
 
-1. Push this repo to GitHub/GitLab.
-2. [vercel.com/new](https://vercel.com/new) → import the repo. Framework
-   auto-detected: **Next.js**. No build-setting changes needed.
-3. In Vercel → **Project → Settings → Environment Variables**, add:
-   - `SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
-   - `NEXT_PUBLIC_SITE_URL` = your production URL (e.g. `https://dndlhr.com`)
-4. Run the migration against the **production** Supabase project (SQL Editor →
-   paste [0001_dnd_waitlist.sql](supabase/migrations/0001_dnd_waitlist.sql)).
-5. **Deploy.** Then enable Vercel Analytics (Project → Analytics).
-6. Post-deploy smoke test: sign up with a real email → confirm the row appears in
-   Supabase → sign up the same email again → confirm the "already in" message.
+**Production URL: https://dnd-landing-zeta.vercel.app** (GitHub:
+[datacanvas7/dnd-landing](https://github.com/datacanvas7/dnd-landing), private).
+
+Current setup, for reference and future redeploys:
+
+1. Repo pushed to GitHub; Vercel Git integration connected (auto-deploys on
+   push to `master`). CLI deploys also work: `npx vercel --prod`.
+2. Env vars in Vercel → **Settings → Environment Variables** (Production):
+   - `SUPABASE_URL`, `SUPABASE_ANON_KEY` — the live project
+   - `RESEND_API_KEY` — send-only key
+   - `EMAIL_FROM`, `EMAIL_REPLY_TO` — defaults in
+     [lib/email/send.ts](lib/email/send.ts); update after domain verification
+   - `NEXT_PUBLIC_SITE_URL` = `https://dnd-landing-zeta.vercel.app`
+     (build-time; drives canonical/OG URLs — update when a custom domain lands)
+3. Migration already run against the production Supabase project.
+4. **Post-deploy smoke test (done):** signup → row in Supabase → same email
+   again (case-changed) → 409 "already in".
+
+> **Deploy gotcha:** Vercel blocks Git-integration deployments whose commit
+> author has no linked Git account. Commit as
+> `datacanvas7@users.noreply.github.com` (repo-local `git config user.email`).
 
 > This project has **not** been deployed yet — no Vercel/Supabase credentials were
 > available in this environment. The production build (`npm run build`) passes and
